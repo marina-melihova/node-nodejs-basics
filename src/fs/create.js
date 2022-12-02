@@ -1,14 +1,15 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import * as url from 'url';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const { promises: fsPromises } = fs;
 
 const create = async () => {
-  const filePath = path.join(__dirname, 'files', 'fresh.txt');
+  const file = path.join(__dirname, 'files', 'fresh.txt');
 
   try {
-    await fs.writeFile(filePath, 'I am fresh and young', { flag: 'wx' });
+    await fsPromises.writeFile(file, 'I am fresh and young', { flag: 'wx' });
   } catch (e) {
     throw new Error('FS operation failed');
   }
