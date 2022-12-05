@@ -2,10 +2,9 @@ import path from 'path';
 import { release, version } from 'os';
 import { createServer as createServerHttp } from 'http';
 import './files/c.js';
-import * as url from 'url';
+import esmPath from '../utils/esmPath.js';
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const { __dirname, __filename } = esmPath(import.meta);
 
 const random = Math.random();
 

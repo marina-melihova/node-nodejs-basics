@@ -1,13 +1,18 @@
-import fs from 'fs';
+import { promises as fsPromises } from 'fs';
 import path from 'path';
-import * as url from 'url';
+import { AppError, esmPath } from '../utils/index.js';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const { __dirname } = esmPath(import.meta);
 
 const read = async () => {
-  const file = path.join(__dirname, 'files', 'fileToRead.txt');
-  const readable = fs.createReadStream(file, { encoding: 'utf8' });
-  readable.pipe(process.stdout);
+  try {
+    const file = path.join(__dirname, 'files', 'fileToRead.txt');
+    const fd = await fsPromises.open(file);
+    const readableStream = fd.createReadStream({ encoding: 'utf8' });
+    readableStream.pipe(process.stdout);
+  } catch {
+    throw new AppError('FS operation failed');
+  }
 };
 
 await read();
