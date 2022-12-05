@@ -1,5 +1,5 @@
 import { promises as fsPromises } from 'fs';
-import zlib from 'zlib';
+import { createUnzip } from 'zlib';
 import path from 'path';
 import { AppError, esmPath } from '../utils/index.js';
 
@@ -13,8 +13,8 @@ const decompress = async () => {
     const file = path.join(__dirname, 'files', 'fileToCompress.txt');
     const fd = await fsPromises.open(file, 'w');
     const writeableStream = fd.createWriteStream();
-    const gz = zlib.createUnzip();
-    readableStream.pipe(gz).pipe(writeableStream);
+    const gzip = createUnzip();
+    readableStream.pipe(gzip).pipe(writeableStream);
   } catch {
     throw new AppError('FS operation failed');
   }
